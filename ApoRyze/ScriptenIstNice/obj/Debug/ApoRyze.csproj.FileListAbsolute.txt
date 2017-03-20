@@ -1,0 +1,16 @@
+I:\ScriptenIstNice\ScriptenIstNice\bin\Debug\ScriptenIstNice.exe.config
+I:\ScriptenIstNice\ScriptenIstNice\bin\Debug\ScriptenIstNice.exe
+I:\ScriptenIstNice\ScriptenIstNice\bin\Debug\ScriptenIstNice.pdb
+I:\ScriptenIstNice\ScriptenIstNice\bin\Debug\SharpDX.Direct3D9.dll
+I:\ScriptenIstNice\ScriptenIstNice\bin\Debug\Newtonsoft.Json.dll
+I:\ScriptenIstNice\ScriptenIstNice\obj\Debug\ApoRyze.csprojResolveAssemblyReference.cache
+I:\ScriptenIstNice\ScriptenIstNice\obj\Debug\ScriptenIstNice.exe
+I:\ScriptenIstNice\ScriptenIstNice\obj\Debug\ScriptenIstNice.pdb
+E:\ScriptenIstNice\ScriptenIstNice\bin\Debug\ScriptenIstNice.exe.config
+E:\ScriptenIstNice\ScriptenIstNice\obj\Debug\ScriptenIstNice.exe
+E:\ScriptenIstNice\ScriptenIstNice\obj\Debug\ScriptenIstNice.pdb
+E:\ScriptenIstNice\ScriptenIstNice\bin\Debug\ScriptenIstNice.exe
+E:\ScriptenIstNice\ScriptenIstNice\bin\Debug\ScriptenIstNice.pdb
+E:\ScriptenIstNice\ScriptenIstNice\bin\Debug\SharpDX.Direct3D9.dll
+E:\ScriptenIstNice\ScriptenIstNice\bin\Debug\Newtonsoft.Json.dll
+E:\ScriptenIstNice\ScriptenIstNice\obj\Debug\ApoRyze.csprojResolveAssemblyReference.cache
