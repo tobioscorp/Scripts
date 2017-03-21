@@ -28,7 +28,7 @@ namespace ApoRyze
                 return;
             }
 
-            SpellOption.SetupPrediction();
+            SpellOption.SetupPrediction();            
             SpellOption.Spells();
             Menü.SetupMenu();
 
@@ -51,7 +51,6 @@ namespace ApoRyze
                 {
                     Combo.CastCombo();
                 }
-
 
                 if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Flee))
                 {

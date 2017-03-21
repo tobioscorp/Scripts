@@ -14,7 +14,6 @@ namespace ApoRyze
     class SpellOption
     {
         public static AIHeroClient Spieler = Player.Instance;
-
         public static Spell.Skillshot Q, R, Flash;
         public static Spell.Targeted W, E, Ignite;
         public static Item Hourglas, Seraphen, Tear, Archangels;
@@ -24,7 +23,7 @@ namespace ApoRyze
 
         public static void Spells()
         {
-            Q = new Spell.Skillshot(SpellSlot.Q, 1000, SkillShotType.Linear, 250, 1700, 60)
+            Q = new Spell.Skillshot(SpellSlot.Q, DamageType.Magical)
             { AllowedCollisionCount = 0 };
             W = new Spell.Targeted(SpellSlot.W, 615, DamageType.Magical);
             E = new Spell.Targeted(SpellSlot.E, 615, DamageType.Magical);
@@ -52,6 +51,8 @@ namespace ApoRyze
                 Spawnpunkt = new Vector3(712, 724, 183);
             if (Spieler.Team == GameObjectTeam.Chaos)
                 Spawnpunkt = new Vector2(13806, 13834).To3D();
+
+            
         }
 
         public static HitChance Chance;
@@ -86,6 +87,25 @@ namespace ApoRyze
                 MaxDelay = Menü.RyzeMenu["MaxDelay"].Cast<Slider>().CurrentValue;
             }
             catch { }
+        }
+
+        private static bool Active = false;
+
+        public static void SetupShield(bool Mode)
+        {
+            if (Mode == true && Active == false)
+            {
+                Obj_AI_Base.OnBasicAttack += Combo.AutoShield;
+                Obj_AI_Base.OnProcessSpellCast += Combo.AutoShield;
+                Active = true;
+            }
+
+            if(Mode == false == Active == true)
+            {
+                Obj_AI_Base.OnBasicAttack -= Combo.AutoShield;
+                Obj_AI_Base.OnProcessSpellCast -= Combo.AutoShield;
+                Active = false;
+            }
         }
 
         public static Vector3 GetPunkt()

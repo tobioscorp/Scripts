@@ -68,7 +68,7 @@ namespace ApoRyze
             Clear.AddLabel("Use Spells in ClearMode");
             Clear.Add("UseQ", new CheckBox("Use Q", true));
             Clear.Add("UseE", new CheckBox("Use E", true));
-            Clear.Add("UseW", new CheckBox("Use W", true));
+            Clear.Add("UseW", new CheckBox("Use W", false));
             Clear.AddSeparator();
             Clear.AddLabel("Clear Mode Minimum Mana");
             Clear.Add("Mana", new Slider("Minimum Mana", 20, 0, 100));
@@ -93,9 +93,10 @@ namespace ApoRyze
             
         }
 
-        private static void Setup(object sender, EventArgs args)
+        public static void Setup(object sender, EventArgs args)
         {
             SpellOption.SetupPrediction();
+            SpellOption.SetupShield(AutoShield["Active"].Cast<CheckBox>().CurrentValue);
         }
     }
 }

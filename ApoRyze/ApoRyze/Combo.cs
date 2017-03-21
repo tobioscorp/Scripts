@@ -26,43 +26,45 @@ namespace ApoRyze
 
             if (target.IsValidTarget(SpellOption.Q.Range) && SpellOption.Q.IsReady() && QPred.HitChance >= SpellOption.Chance && SpellOption.Spieler.Mana >= SpellOption.Q.ManaCost && Menü.ComboM["Q"].Cast<CheckBox>().CurrentValue == true)
             {
-                Core.DelayAction(() => SpellOption.Q.Cast(target), Delay.Next(SpellOption.MinDelay, SpellOption.MaxDelay));
+                QPred = SpellOption.Q.GetPrediction(target);
+                SpellOption.Q.Cast(target);
             }
 
             // Combo Option EW
             if (Menü.ComboM["Combo"].Cast<ComboBox>().CurrentValue == 0)
             {
-                if (target.IsValidTarget(SpellOption.E.Range) && SpellOption.E.IsReady() && SpellOption.Spieler.Mana >= SpellOption.E.ManaCost && Menü.ComboM["E"].Cast<CheckBox>().CurrentValue == true)
+                if (target.IsValidTarget(SpellOption.E.Range) && SpellOption.E.IsReady() && SpellOption.Spieler.Mana >= SpellOption.E.ManaCost && Menü.ComboM["E"].Cast<CheckBox>().CurrentValue == true && SpellOption.Q.IsOnCooldown)
                 {
                     Core.DelayAction(() => SpellOption.E.Cast(target), Delay.Next(SpellOption.MinDelay, SpellOption.MaxDelay));
                 }
 
-                if (target.IsValidTarget(SpellOption.W.Range) && SpellOption.W.IsReady() && SpellOption.Spieler.Mana >= SpellOption.W.ManaCost && Menü.ComboM["W"].Cast<CheckBox>().CurrentValue == true)
+                if (target.IsValidTarget(SpellOption.W.Range) && SpellOption.W.IsReady() && SpellOption.Spieler.Mana >= SpellOption.W.ManaCost && Menü.ComboM["W"].Cast<CheckBox>().CurrentValue == true && SpellOption.Q.IsOnCooldown)
                 {
                     Core.DelayAction(() => SpellOption.W.Cast(target), Delay.Next(SpellOption.MinDelay, SpellOption.MaxDelay));
                 }
 
                 if (target.IsValidTarget(SpellOption.Q.Range) && SpellOption.Q.IsReady() && QPred.HitChance >= SpellOption.Chance && SpellOption.Spieler.Mana >= SpellOption.Q.ManaCost && Menü.ComboM["Q"].Cast<CheckBox>().CurrentValue == true && target.HasBuff("RyzeE"))
                 {
-                    Core.DelayAction(() => SpellOption.Q.Cast(target), Delay.Next(SpellOption.MinDelay, SpellOption.MaxDelay));
+                    QPred = SpellOption.Q.GetPrediction(target);
+                    SpellOption.Q.Cast(target);
                 }
-
             }
 
             // Combo Option EQ
             if (Menü.ComboM["Combo"].Cast<ComboBox>().CurrentValue == 1)
             {
-                if (target.IsValidTarget(SpellOption.E.Range) && SpellOption.E.IsReady() && SpellOption.Spieler.Mana >= SpellOption.E.ManaCost && Menü.ComboM["E"].Cast<CheckBox>().CurrentValue == true)
+                if (target.IsValidTarget(SpellOption.E.Range) && SpellOption.E.IsReady() && SpellOption.Spieler.Mana >= SpellOption.E.ManaCost && Menü.ComboM["E"].Cast<CheckBox>().CurrentValue == true && SpellOption.Q.IsOnCooldown)
                 {
                     Core.DelayAction(() => SpellOption.E.Cast(target), Delay.Next(SpellOption.MinDelay, SpellOption.MaxDelay));
                 }
 
                 if (target.IsValidTarget(SpellOption.Q.Range) && SpellOption.Q.IsReady() && QPred.HitChance >= SpellOption.Chance && SpellOption.Spieler.Mana >= SpellOption.Q.ManaCost && Menü.ComboM["Q"].Cast<CheckBox>().CurrentValue == true && target.HasBuff("RyzeE"))
                 {
-                    Core.DelayAction(() => SpellOption.Q.Cast(target), Delay.Next(SpellOption.MinDelay, SpellOption.MaxDelay));
+                    QPred = SpellOption.Q.GetPrediction(target);
+                    SpellOption.Q.Cast(target);
                 }
 
-                if (target.IsValidTarget(SpellOption.W.Range) && SpellOption.W.IsReady() && SpellOption.Spieler.Mana >= SpellOption.W.ManaCost && Menü.ComboM["W"].Cast<CheckBox>().CurrentValue == true)
+                if (target.IsValidTarget(SpellOption.W.Range) && SpellOption.W.IsReady() && SpellOption.Spieler.Mana >= SpellOption.W.ManaCost && Menü.ComboM["W"].Cast<CheckBox>().CurrentValue == true && SpellOption.Q.IsOnCooldown)
                 {
                     Core.DelayAction(() => SpellOption.W.Cast(target), Delay.Next(SpellOption.MinDelay, SpellOption.MaxDelay));
                 }
@@ -105,7 +107,7 @@ namespace ApoRyze
             bool Port;
             IEnumerable<Obj_AI_Turret> Türme = EntityManager.Turrets.Allies.OrderBy(x => x.Distance(SpellOption.Spieler.Position));
             Obj_AI_Turret EntfernterTurm = null;
-
+            
             foreach (var Item in Türme)
             {
                 if (EntfernterTurm == null)
@@ -301,7 +303,7 @@ namespace ApoRyze
 
             Ticks++;
 
-            if (Ticks >= TPS * 8)
+            if (Ticks >= TPS * 4)
             {
                 Ticks = 0;
                 Obj_AI_Base target = TargetSelector.GetTarget(SpellOption.Q.Range + 200, DamageType.Magical);
@@ -334,13 +336,17 @@ namespace ApoRyze
                 var QPred = SpellOption.Q.GetPrediction(target);
             }
         }
+
         // -------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-        public static void AutoShield()
+        // AutoShield Mode
+        public static void AutoShield(Obj_AI_Base Sender, GameObjectProcessSpellCastEventArgs e)
         {
-            var target = TargetSelector.GetTarget(SpellOption.Q.Range, DamageType.Magical);
+            var Attacker = Sender as AIHeroClient;
+            var target = e.Target as AIHeroClient;
 
-            if (Prediction.Health.GetPrediction(SpellOption.Spieler, 2500) <= SpellOption.Spieler.MaxHealth / 100 * Menü.AutoShield["Prozent"].Cast<Slider>().CurrentValue)
+            if (target == null || Sender == null) return;
+
+            if(target.IsMe)
             {
                 if (SpellOption.Spieler.HealthPercent <= Menü.AutoShield["Prozent"].Cast<Slider>().CurrentValue && SpellOption.Hourglas.IsOwned() && Menü.AutoShield["Zhonyas"].Cast<CheckBox>().CurrentValue && SpellOption.Hourglas.IsReady() && SpellOption.Spieler.IsInRange(target, SpellOption.Q.Range + 200))
                 {
