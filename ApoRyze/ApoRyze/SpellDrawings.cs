@@ -38,12 +38,10 @@ namespace ApoRyze
                 {
                     Circle.Draw(SharpDX.Color.White, SpellOption.R.Range, SpellOption.Spieler);
                 }
-
-                HPBar();
             }
         }
 
-        public static void HPBar()
+        /*public static void HPBar()
         {
             IEnumerable<Obj_AI_Base> Heroes = EntityManager.Enemies.Where(x => x.IsHPBarRendered && x.IsValidTarget() && !x.IsMonster && !x.IsMinion);
 
@@ -66,7 +64,7 @@ namespace ApoRyze
                     Drawing.DrawText(target.HPBarPosition.X, target.HPBarPosition.Y + 25, System.Drawing.Color.Red, "Kill him!", 25);
                 }
             }
-        }
+        }*/
     }
 }
    
