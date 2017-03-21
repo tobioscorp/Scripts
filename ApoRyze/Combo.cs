@@ -192,9 +192,9 @@ namespace ApoRyze
             Obj_AI_Minion Minion = null;
             IEnumerable<Obj_AI_Minion> M = EntityManager.MinionsAndMonsters.GetLaneMinions();
 
-            var Flux = EntityManager.MinionsAndMonsters.EnemyMinions.Where(m => m.IsValidTarget(SpellOption.Spieler.AttackRange + 200) && m.HasBuff("RyzeE")).OrderBy(x => x.Distance(Player.Instance.Position)).FirstOrDefault();
-            var Killable = EntityManager.MinionsAndMonsters.EnemyMinions.Where(m => m.IsValidTarget(SpellOption.Spieler.AttackRange + 200) && m.Health <= SpellOption.E.GetSpellDamage(m)).OrderBy(m => m.Health).LastOrDefault();
-            var Minions = EntityManager.MinionsAndMonsters.GetLaneMinions().Where(m => m.IsValidTarget(SpellOption.Spieler.AttackRange + 200)).OrderBy(a => a.Distance(SpellOption.Spieler)).FirstOrDefault(a => a.IsValidTarget(SpellOption.E.Range));
+            var Flux = EntityManager.MinionsAndMonsters.EnemyMinions.Where(m => m.IsValidTarget(SpellOption.Spieler.AttackRange) && m.HasBuff("RyzeE")).OrderBy(x => x.Distance(Player.Instance.Position)).FirstOrDefault();
+            var Killable = EntityManager.MinionsAndMonsters.EnemyMinions.Where(m => m.IsValidTarget(SpellOption.Spieler.AttackRange) && m.Health <= SpellOption.E.GetSpellDamage(m)).OrderBy(m => m.Health).LastOrDefault();
+            var Minions = EntityManager.MinionsAndMonsters.GetLaneMinions().Where(m => m.IsValidTarget(SpellOption.Spieler.AttackRange)).OrderBy(a => a.Distance(SpellOption.Spieler)).FirstOrDefault(a => a.IsValidTarget(SpellOption.E.Range));
 
             var target = SpellOption.Q.GetTarget();
 
@@ -244,42 +244,51 @@ namespace ApoRyze
             Random Delay = new Random();
             Obj_AI_Base Minion = null;
             IEnumerable<Obj_AI_Base> M = EntityManager.MinionsAndMonsters.GetJungleMonsters();
+            var Flux = EntityManager.MinionsAndMonsters.Monsters.Where(m => m.IsValidTarget(SpellOption.Spieler.AttackRange) && m.HasBuff("RyzeE")).OrderBy(x => x.Health).LastOrDefault();
+            var MinionPredict = EntityManager.MinionsAndMonsters.Monsters.Where(m => m.IsValidTarget(SpellOption.Spieler.AttackRange) && m.HasBuff("RyzeE") && SpellOption.Q.GetPrediction(m).HitChance >= HitChance.Medium).OrderBy(x => x.Health).LastOrDefault();
+            var Minions = EntityManager.MinionsAndMonsters.GetJungleMonsters().Where(m => m.IsValidTarget(SpellOption.Spieler.AttackRange)).OrderBy(a => a.MaxHealth).LastOrDefault(a => a.IsValidTarget(SpellOption.E.Range));
 
-            var Flux = EntityManager.MinionsAndMonsters.Monsters.Where(m => m.IsValidTarget(SpellOption.Spieler.AttackRange + 200) && m.HasBuff("RyzeE")).OrderBy(x => x.Distance(Player.Instance.Position)).FirstOrDefault();
-            var Killable = EntityManager.MinionsAndMonsters.Monsters.Where(m => m.IsValidTarget(SpellOption.Spieler.AttackRange + 200) && m.Health <= SpellOption.E.GetSpellDamage(m)).OrderBy(m => m.Health).LastOrDefault();
-            var Minions = EntityManager.MinionsAndMonsters.GetJungleMonsters().Where(m => m.IsValidTarget(SpellOption.Spieler.AttackRange + 200)).OrderBy(a => a.MaxHealth).FirstOrDefault(a => a.IsValidTarget(SpellOption.E.Range));
-
-            if (Killable != null) Minion = Killable;
+            if (MinionPredict != null) Minion = MinionPredict;
             else if (Flux != null) Minion = Flux;
             else if (Minions != null) Minion = Minions;
 
             foreach (var Item in M)
             {
-                if (Item.HasBuff("RyzeE") && Item.Health >= SpellOption.Q.GetSpellDamage(Item) * 2 && Item.IsValidTarget() && SpellOption.Q.GetPrediction(Item).HitChance >= SpellOption.Chance
-                    && SpellOption.Q.IsReady() && SpellOption.Q.ManaCost <= SpellOption.Spieler.Mana && Minion.Health >= 40)
+                if (Item.IsValidTarget() && SpellOption.Q.GetPrediction(Item).HitChance >= SpellOption.Chance
+                    && SpellOption.Q.IsReady() && SpellOption.Q.ManaCost <= SpellOption.Spieler.Mana && Item.IsAlive())
+                {
                     Core.DelayAction(() => SpellOption.Q.Cast(Item), Delay.Next(SpellOption.MinDelay, SpellOption.MaxDelay));
+                    if (SpellOption.Q.GetSpellDamage(Item) >= Item.Health) return;
+                }
+
+                if (Item.IsValidTarget() && (Item.HasBuff("RyzeE") || Item.Health <= SpellOption.E.GetSpellDamage(Item)) && SpellOption.E.IsReady())
+                {
+                    SpellOption.E.Cast(Item);
+                    if (SpellOption.E.GetSpellDamage(Item) >= Item.Health) return;
+                }
             }
 
             if (Minion == null) return;
 
-            if (Minion.Health <= SpellOption.Spieler.GetAutoAttackDamage(Minion) / 2 && Minion.HasBuff("RyzeE") && SpellOption.Q.IsReady() && SpellOption.E.IsReady()) Orbwalker.DisableAttacking = true;
-            else if (Minion.Health <= SpellOption.Spieler.GetAutoAttackDamage(Minion)) return;
-
             var QPred = SpellOption.Q.GetPrediction(Minion);
+
+            if (Minion.IsValidTarget(SpellOption.Q.Range) && SpellOption.Q.IsReady() && SpellOption.Spieler.Mana >= SpellOption.Q.ManaCost && QPred.HitChance >= SpellOption.Chance && Minion.IsAlive())
+            {
+                QPred = SpellOption.Q.GetPrediction(Minion);
+                Core.DelayAction(() => SpellOption.Q.Cast(Minion), Delay.Next(SpellOption.MinDelay, SpellOption.MaxDelay));
+                if (SpellOption.Q.GetSpellDamage(Minion) >= Minion.Health) return;
+            }
+
+            if (Minion.IsValidTarget(SpellOption.W.Range) && SpellOption.W.IsReady() && SpellOption.Spieler.Mana >= SpellOption.W.ManaCost && Minion.IsAlive() && !Minion.HasBuff("RyzeE") && SpellOption.E.IsReady())
+            {
+                Core.DelayAction(() => SpellOption.W.Cast(Minion), Delay.Next(SpellOption.MinDelay, SpellOption.MaxDelay));
+                if (SpellOption.W.GetSpellDamage(Minion) >= Minion.Health) return;
+            }
 
             if (Minion.IsValidTarget(SpellOption.E.Range) && SpellOption.E.IsReady() && SpellOption.Spieler.Mana >= SpellOption.E.ManaCost && Minion.IsAlive())
             {
                 Core.DelayAction(() => SpellOption.E.Cast(Minion), Delay.Next(SpellOption.MinDelay, SpellOption.MaxDelay));
-            }
-
-            if (Minion.IsValidTarget(SpellOption.Q.Range) && SpellOption.Q.IsReady() && SpellOption.Spieler.Mana >= SpellOption.Q.ManaCost && QPred.HitChance >= SpellOption.Chance && Minion.IsAlive())
-            {
-                Core.DelayAction(() => SpellOption.Q.Cast(Minion), Delay.Next(SpellOption.MinDelay, SpellOption.MaxDelay));
-            }
-
-            if (Minion.IsValidTarget(SpellOption.W.Range) && SpellOption.W.IsReady() && SpellOption.Spieler.Mana >= SpellOption.W.ManaCost && Minion.IsAlive())
-            {
-                Core.DelayAction(() => SpellOption.W.Cast(Minion), Delay.Next(SpellOption.MinDelay, SpellOption.MaxDelay));
+                if (SpellOption.E.GetSpellDamage(Minion) >= Minion.Health) return;
             }
         }
         // ------------------------------------------------------------------------------------------------------------------------------------------------------------

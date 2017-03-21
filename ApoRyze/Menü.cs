@@ -42,9 +42,9 @@ namespace ApoRyze
                 Drawings.Add(Item.Slot.ToString(), new CheckBox("Draw " + Item.Slot.ToString() + " Range"));
             }
             Drawings.AddSeparator();
-            //Drawings.AddLabel("Mark Enemys:");
-            //Drawings.Add("DrawKillable", new CheckBox("Mark Killable Enemys", true));
-            //Drawings.Add("DrawKillable", new CheckBox("Draw Enemys Attack Range", false));
+            Drawings.AddLabel("Mark Enemys:");
+            Drawings.Add("DrawKillable", new CheckBox("Mark Killable Enemys", true));
+            Drawings.Add("DrawKillable", new CheckBox("Draw Enemys Attack Range", false));
 
             // Main Menu -------------------------------------------------------------------------------------------------------------------
             RyzeMenu.AddLabel("Activate Script", 25);
