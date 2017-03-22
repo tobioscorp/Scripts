@@ -15,6 +15,6 @@ I:\ScriptenIstNice\ScriptenIstNice\bin\Debug\ApoRyze.exe
 I:\ScriptenIstNice\ScriptenIstNice\bin\Debug\ApoRyze.pdb
 I:\ScriptenIstNice\ScriptenIstNice\obj\Debug\ApoRyze.exe
 I:\ScriptenIstNice\ScriptenIstNice\obj\Debug\ApoRyze.pdb
-C:\Users\TOBIAS\AppData\Local\GitHub\TutorialRepository_d0aa732a2b4666b3029e2320f1a06cd39e99c9fc\new-repo\ApoRyze\bin\Debug\ApoRyze.exe.config
-C:\Users\TOBIAS\AppData\Local\GitHub\TutorialRepository_d0aa732a2b4666b3029e2320f1a06cd39e99c9fc\new-repo\ApoRyze\obj\Debug\ApoRyze.exe
-C:\Users\TOBIAS\AppData\Local\GitHub\TutorialRepository_d0aa732a2b4666b3029e2320f1a06cd39e99c9fc\new-repo\ApoRyze\obj\Debug\ApoRyze.pdb
+C:\Users\TOBIAS\AppData\Local\GitHub\TutorialRepository_d0aa732a2b4666b3029e2320f1a06cd39e99c9fc\new-repo\ApoRyze\ApoRyze\bin\Debug\ApoRyze.exe.config
+C:\Users\TOBIAS\AppData\Local\GitHub\TutorialRepository_d0aa732a2b4666b3029e2320f1a06cd39e99c9fc\new-repo\ApoRyze\ApoRyze\obj\Debug\ApoRyze.exe
+C:\Users\TOBIAS\AppData\Local\GitHub\TutorialRepository_d0aa732a2b4666b3029e2320f1a06cd39e99c9fc\new-repo\ApoRyze\ApoRyze\obj\Debug\ApoRyze.pdb

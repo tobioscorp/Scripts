@@ -59,12 +59,12 @@ namespace ApoRyze
 
                 if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear))
                 {
-                    Combo.ClearMode();
+                    ClearModes.ClearMode();
                 }
 
                 if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear))
                 {
-                    Combo.JungleClear();
+                    ClearModes.JungleClear();
                 }
             }
         }

@@ -54,6 +54,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClearModes.cs" />
     <Compile Include="Combo.cs" />
     <Compile Include="SpellDrawings.cs" />
     <Compile Include="Menü.cs" />

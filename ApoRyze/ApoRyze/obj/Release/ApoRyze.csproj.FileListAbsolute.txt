@@ -1,6 +1,3 @@
-I:\ScriptenIstNice\ScriptenIstNice\bin\Release\ScriptenIstNice.exe.config
-I:\ScriptenIstNice\ScriptenIstNice\bin\Release\ScriptenIstNice.exe
-I:\ScriptenIstNice\ScriptenIstNice\bin\Release\ScriptenIstNice.pdb
 I:\ScriptenIstNice\ScriptenIstNice\bin\Release\EloBuddy.dll
 I:\ScriptenIstNice\ScriptenIstNice\bin\Release\EloBuddy.SDK.dll
 I:\ScriptenIstNice\ScriptenIstNice\bin\Release\SharpDX.dll
@@ -8,5 +5,8 @@ I:\ScriptenIstNice\ScriptenIstNice\bin\Release\SharpDX.Direct3D9.dll
 I:\ScriptenIstNice\ScriptenIstNice\bin\Release\Newtonsoft.Json.dll
 I:\ScriptenIstNice\ScriptenIstNice\bin\Release\EloBuddy.Sandbox.dll
 I:\ScriptenIstNice\ScriptenIstNice\obj\Release\ApoRyze.csprojResolveAssemblyReference.cache
-I:\ScriptenIstNice\ScriptenIstNice\obj\Release\ScriptenIstNice.exe
-I:\ScriptenIstNice\ScriptenIstNice\obj\Release\ScriptenIstNice.pdb
+I:\ScriptenIstNice\ScriptenIstNice\bin\Release\ApoRyze.exe.config
+I:\ScriptenIstNice\ScriptenIstNice\bin\Release\ApoRyze.exe
+I:\ScriptenIstNice\ScriptenIstNice\bin\Release\ApoRyze.pdb
+I:\ScriptenIstNice\ScriptenIstNice\obj\Release\ApoRyze.exe
+I:\ScriptenIstNice\ScriptenIstNice\obj\Release\ApoRyze.pdb
